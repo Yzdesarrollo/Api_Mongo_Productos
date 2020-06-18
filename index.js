@@ -2,6 +2,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+
+// import Schema o models
+const ProductModel = require('./models/productModel');
+
 // server
 const app = express();
 const port = process.env.PORT || 9000;
@@ -22,8 +26,24 @@ app.get('/api/product/:productId', (req, res) => {
 });
 
 app.post('/api/product', (req, res) => {
+    // instanciando el modelo
+    let products = new ProductModel()
+
+    //probando si llegan los datos
+    console.log('POST:/api/product');
     console.log(req.body);
-    res.status(200).send({ message: 'Product OK' })
+    
+
+    // propiedades del modelo
+    products.name = req.body.name
+    products.price = req.body.price
+    products.category = req.body.category
+    products.image = req.body.image
+
+    products.save( (err, data) =>{
+        if(err) res.status(500).send( {message: `no se pudo guardar los datos: ${err}`} )
+        res.status(200).send( {products: data} )
+    })
 });
 
 app.put('/api/product/:productId', () => {
