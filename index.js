@@ -5,7 +5,6 @@ const mongoose = require('mongoose');
 
 // import Schema o models
 const ProductModel = require('./models/productModel');
-const e = require('express');
 
 // server
 const app = express();
